@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /${spring.application.name}
+
+spring:
+  application:
+    name: monitor-sensors
+
+  threads:
+    virtual:
+      enabled: true
+
+  jackson:
+    default-property-inclusion: non_null
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/monitor-sensors
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver

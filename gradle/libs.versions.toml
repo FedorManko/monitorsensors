@@ -1,0 +1,5 @@
+[versions]
+springBoot = "3.4.3"
+springDependencyManagement = "1.1.7"
+benManes = "0.52.0"
+gitProperties = "2.4.2"
