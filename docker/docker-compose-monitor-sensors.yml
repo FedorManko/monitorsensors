@@ -5,30 +5,29 @@ services:
 
   monitor-sensors:
     container_name: manko-monitor-sensors
-    image: iowncontainerregistry.azurecr.io/iown/backend/vault:latest
+    image: manko.project.com/monitor-sensors:latest
     environment:
       spring.profiles.active: docker
     ports:
       - "9093:9093"
     depends_on:
-      - vault-postgres
+      - monitor-sensors-postgres
     networks:
-      - iown_backend_network
+      - backend_network
 
-  vault-postgres:
-    container_name: vault-postgres-db
+  monitor-sensors-postgres:
+    container_name: monitor-sensors-postgres-db
     image: postgres:latest
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: vault
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/init/vault-init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/init/monitor-sensors-init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - iown_backend_network
+      - backend_network
 
 
 volumes:
@@ -36,6 +35,6 @@ volumes:
     driver: local
 
 networks:
-  iown_backend_network:
+  backend_network:
     driver: bridge
-    name: iown_backend_network
+    name: backend_network

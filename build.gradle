@@ -3,6 +3,7 @@ plugins {
     id 'checkstyle'
     id 'com.github.ben-manes.versions' version libs.versions.benManes
     id 'com.gorylenko.gradle-git-properties' version libs.versions.gitProperties
+    id 'com.bmuschko.docker-spring-boot-application' version libs.versions.docker
     id 'org.springframework.boot' version libs.versions.springBoot
     id 'io.spring.dependency-management' version libs.versions.springDependencyManagement
 }
@@ -27,11 +28,13 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -51,8 +54,14 @@ checkstyle {
     configFile = file("${rootProject.projectDir}/config/checkstyle/google_checks.xml")
 }
 
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
 gitProperties {
-    //git.properties создает файл в resources/main/META-inf
     dateFormat = "yyyy-MM-dd'T'HH:mmZ"
     keys = [
             "git.branch",
@@ -63,4 +72,21 @@ gitProperties {
             "git.commit.id.abbrev",
             "git.commit.message.full"
     ]
+}
+
+def dockerImageName = "manko.project.com/monitor-sensors"
+
+def dockerImagePrefix = [
+        "${dockerImageName}:${version}",
+        "${dockerImageName}:latest"
+]
+
+docker {
+    springBootApplication {
+        maintainer = "manko"
+        baseImage = "eclipse-temurin:21.0.4_7-jdk-jammy"
+        ports = [8080, 8080]
+        images = dockerImagePrefix
+        jvmArgs = ["-Xmx384m"]
+    }
 }

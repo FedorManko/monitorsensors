@@ -1,0 +1,23 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, info, loggers
+
+spring:
+
+#  docker:
+#    compose:
+#      readiness:
+#        wait: never
+#      enabled: true
+#      file: ./docker/docker-compose-monitor-sensors.yaml
+#      lifecycle-management: start_only
+#      start:
+#        skip: if_running
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/monitor-sensors
+    username: root
+    password: password
+    driver-class-name: org.postgresql.Driver
