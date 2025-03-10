@@ -14,20 +14,37 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+/**
+ * Class provides additional logic via AOP.
+ *
+ * @author f.manko
+ * @since 09.03.2025
+ */
 @Slf4j
 @Aspect
 @Component
 public class LoggingAspect {
 
+    /**
+     * Method configure controller point cut.
+     */
     @Pointcut("execution(public *  org.manko.monitorsensors.controller.*.*(..))")
     public void controllerLog() {
 
     }
 
+    /**
+     * Method configure service point cut.
+     */
     @Pointcut("execution(public * org.manko.monitorsensors.service.*.*(..))")
     public void serviceLog() {
     }
 
+    /**
+     * Method create additional logic before controller calls.
+     *
+     * @param jp {@link JoinPoint}
+     */
     @Before("controllerLog()")
     public void doBeforeController(JoinPoint jp) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
@@ -45,6 +62,11 @@ public class LoggingAspect {
             jp.getSignature().getDeclaringTypeName(), jp.getSignature().getName());
     }
 
+    /**
+     * Method create additional logic before service calls.
+     *
+     * @param jp {@link JoinPoint}
+     */
     @Before("serviceLog()")
     public void doBeforeService(JoinPoint jp) {
         log.info("RUN SERVICE:\n"
@@ -52,6 +74,11 @@ public class LoggingAspect {
             jp.getSignature().getDeclaringTypeName(), jp.getSignature().getName());
     }
 
+    /**
+     * Method create additional logic after returning result.
+     *
+     * @param returnObject {@link Object}
+     */
     @AfterReturning(returning = "returnObject", pointcut = "controllerLog()")
     public void doAfterReturning(Object returnObject) {
         log.info("""
@@ -60,6 +87,12 @@ public class LoggingAspect {
             returnObject);
     }
 
+    /**
+     * Method create additional logic after throwing exception.
+     *
+     * @param jp {@link JoinPoint}
+     * @param ex {@link Exception}
+     */
     @AfterThrowing(throwing = "ex", pointcut = "controllerLog()")
     public void throwsException(JoinPoint jp, Exception ex) {
         log.error("Request throw an exception. Cause - {}. {}",

@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250309-01
+      author: f.manko
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: sensor_types
+      changes:
+        - createTable:
+            tableName: sensor_types
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sensor_types
+                  autoIncrement: true
+              - column:
+                  name: sensor_type
+                  type: varchar(11)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: sensor_types
+            columns:
+              - column: { name: sensor_type, value: "Pressure" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_types
+            columns:
+              - column: { name: sensor_type, value: "Voltage" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_types
+            columns:
+              - column: { name: sensor_type, value: "Temperature" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_types
+            columns:
+              - column: { name: sensor_type, value: "Humidity" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }

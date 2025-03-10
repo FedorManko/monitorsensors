@@ -1,0 +1,45 @@
+### Should create sensor
+POST http://{{url}}/monitor-sensors/api/v1/sensors
+Content-Type: application/json
+
+{
+  "name": "First sensor",
+  "model": "Model 1",
+  "range": {
+    "from": 22,
+    "to": 45
+  },
+  "sensorTypeId": 1,
+  "sensorUnitId": 1,
+  "location": "kitchen",
+  "description": "description"
+}
+
+> {%
+  client.test("Request executed successfully", function () {
+    client.assert(response.status === 201, "Response status is not 201");
+  });
+%}
+
+### Should update sensor
+PATCH http://{{url}}/monitor-sensors/api/v1/sensors/1
+Content-Type: application/json
+
+{
+  "name": "Se sensor",
+  "model": "Model 4",
+  "range": {
+    "from": 8,
+    "to": 15
+  },
+  "sensorTypeId": 2,
+  "sensorUnitId": 25,
+  "location": "kitchen",
+  "description": "description"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}

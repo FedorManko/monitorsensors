@@ -15,9 +15,18 @@ spring:
 #      lifecycle-management: start_only
 #      start:
 #        skip: if_running
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
 
   datasource:
     url: jdbc:postgresql://localhost:5433/monitor-sensors
     username: root
     password: password
     driver-class-name: org.postgresql.Driver
+
+logging:
+  pattern:
+    console: "%clr(%d{dd:yy:MM:HH:mm}){faint}%clr(${LOG_LEVEL_PATTERN:-%-5p}) %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+  level:
+    root: info

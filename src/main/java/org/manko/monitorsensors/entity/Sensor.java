@@ -1,15 +1,15 @@
 package org.manko.monitorsensors.entity;
 
-import jakarta.persistence.Embedded;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.manko.monitorsensors.enums.SensorType;
+import org.hibernate.annotations.Type;
 
 /**
  * This is common Sensor entity class.
@@ -20,23 +20,24 @@ import org.manko.monitorsensors.enums.SensorType;
 @Getter
 @Setter
 @Entity
-public class Sensor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "sensors")
+public class Sensor extends BaseEntity {
 
     private String name;
 
     private String model;
 
-    @Embedded
+    @Type(value = JsonType.class)
+    @Column(columnDefinition = "jsonb")
     private Range range;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sensor_type_id", referencedColumnName = "id")
     private SensorType type;
 
-    private String unit;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sensor_unit_id", referencedColumnName = "id")
+    private SensorUnit unit;
 
     private String location;
 

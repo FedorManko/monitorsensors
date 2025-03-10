@@ -4,3 +4,15 @@ springDependencyManagement = "1.1.6"
 benManes = "0.52.0"
 gitProperties = "2.4.2"
 docker = "9.4.0"
+liquibase = "4.31.1"
+hypersistence = "3.9.3"
+mapstruct = "1.6.3"
+mapstruct-processor = "1.6.3"
+springdoc = "2.6.0"
+
+[libraries]
+liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
+hypersistence = { module = "io.hypersistence:hypersistence-utils-hibernate-63", version.ref = "hypersistence" }
+mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct-processor" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }

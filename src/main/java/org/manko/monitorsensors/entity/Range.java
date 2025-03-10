@@ -1,12 +1,16 @@
 package org.manko.monitorsensors.entity;
 
-import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This is common Range embedded class.
+ *
+ * @author f.manko
+ * @since 06.03.2025
+ */
 @Getter
 @Setter
-@Embeddable
 public class Range {
 
     private Integer from;

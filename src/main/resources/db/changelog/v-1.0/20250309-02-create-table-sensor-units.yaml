@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250309-02
+      author: f.manko
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: sensor_units
+      changes:
+        - createTable:
+            tableName: sensor_units
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_sensor_units
+                  autoIncrement: true
+              - column:
+                  name: sensor_unit
+                  type: varchar(7)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: sensor_units
+            columns:
+              - column: { name: sensor_unit, value: "voltage" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_units
+            columns:
+              - column: { name: sensor_unit, value: "°С" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_units
+            columns:
+              - column: { name: sensor_unit, value: "%" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: sensor_units
+            columns:
+              - column: { name: sensor_unit, value: "bar" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
