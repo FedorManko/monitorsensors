@@ -15,5 +15,7 @@ public class ValidationConstants {
 
     public static final String SENSOR_TYPE_ID = "sensorTypeId";
     public static final String SENSOR_UNIT_ID = "sensorUnitId";
+    public static final String SENSOR_ID = "sensorId";
+    public static final String EMAIL = "email";
 
 }

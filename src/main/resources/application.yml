@@ -17,3 +17,8 @@ spring:
 
   jackson:
     default-property-inclusion: non_null
+
+  security:
+    user:
+      name: admin
+      password: password

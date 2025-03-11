@@ -3,6 +3,8 @@ package org.manko.monitorsensors.service.vaiidator.context;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.manko.monitorsensors.entity.Customer;
+import org.manko.monitorsensors.entity.Sensor;
 import org.manko.monitorsensors.entity.SensorType;
 import org.manko.monitorsensors.entity.SensorUnit;
 import org.manko.monitorsensors.exception.ApplicationException;
@@ -32,4 +34,16 @@ public class ValidationContext {
      * id.
      */
     private Long sensorUnitId;
+
+    /**
+     * If set - performs customer database validation. Ensures, that {@link Customer} exists by
+     * requested email.
+     */
+    private String loggedInCustomerEmail;
+
+    /**
+     * If set - performs database validation. Ensures, that {@link Sensor} exists by requested
+     * id.
+     */
+    private Long sensorId;
 }

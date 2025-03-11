@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250309-04
+      author: f.manko
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - tableExists:
+                tableName: customers
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_customers
+                  autoIncrement: true
+              - column:
+                  name: email
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - insert:
+            tableName: customers
+            columns:
+              - column: { name: email, value: "john@gmail.com" }
+              - column: { name: role, value: "ADMINISTRATOR" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }
+        - insert:
+            tableName: customers
+            columns:
+              - column: { name: email, value: "mark@gmail.com" }
+              - column: { name: role, value: "VIEWER" }
+              - column: { name: created, valueComputed: "CURRENT_TIMESTAMP" }
+              - column: { name: updated, valueComputed: "CURRENT_TIMESTAMP" }

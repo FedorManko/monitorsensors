@@ -36,7 +36,6 @@ public class SensorRequestDto {
     private String model;
 
     @ValidRangeDto
-    @Schema(example = "Sensor range parameters", description = "Sensor range parameters")
     private RangeDto range;
 
     @Schema(example = "1", description = "Sensor type id")

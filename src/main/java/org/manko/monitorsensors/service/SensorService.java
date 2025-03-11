@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.manko.monitorsensors.dto.request.SensorRequestDto;
 import org.manko.monitorsensors.dto.response.SensorResponseDto;
+import org.manko.monitorsensors.entity.Customer;
 import org.manko.monitorsensors.entity.Sensor;
 import org.manko.monitorsensors.entity.SensorType;
 import org.manko.monitorsensors.entity.SensorUnit;
@@ -22,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 09.03.2025
  */
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class SensorService {
 
     private final SensorTypeRepository sensorTypeRepository;
@@ -35,13 +36,18 @@ public class SensorService {
     /**
      * Method returns an instance of SensorResponseDto.
      *
-     * @param request SensorRequestDto information.
+     * @param loggedInCustomerEmail {@link Customer}.
+     * @param request               SensorRequestDto information.
      * @return an instance of {@link SensorResponseDto}.
      */
-    public SensorResponseDto createSensor(SensorRequestDto request) {
+    public SensorResponseDto createSensor(
+        SensorRequestDto request,
+        String loggedInCustomerEmail
+    ) {
         commonDatabaseValidator.validate(context -> {
             context.setSensorTypeId(request.getSensorTypeId());
             context.setSensorUnitId(request.getSensorUnitId());
+            context.setLoggedInCustomerEmail(loggedInCustomerEmail);
         });
 
         SensorType type =
@@ -56,31 +62,45 @@ public class SensorService {
     /**
      * Method returns a list of SensorResponseDto.
      *
+     * @param loggedInCustomerEmail {@link Customer}.
+     * @param searchTerm            search parameter.
      * @return a list of {@link SensorResponseDto}.
      */
     @Transactional(readOnly = true)
-    public List<SensorResponseDto> findAllSensors() {
-        return sensorMapper.toDtoList(sensorRepository.findAll());
+    public List<SensorResponseDto> findAllSensors(String loggedInCustomerEmail, String searchTerm) {
+        validateEmail(loggedInCustomerEmail);
+        return sensorMapper.toDtoList(sensorRepository.findAllWithSearch(searchTerm));
     }
 
     /**
      * Method delete sensor by id.
+     *
+     * @param sensorId              {@link Sensor} id.
+     * @param loggedInCustomerEmail {@link Customer}.
      */
-    public void deleteSensor(Long sensorId) {
+    public void deleteSensor(Long sensorId, String loggedInCustomerEmail) {
+        validateEmail(loggedInCustomerEmail);
         sensorRepository.deleteById(sensorId);
     }
 
     /**
      * Method updates current Sensor by id.
      *
-     * @param sensorId id of {@link Sensor}.
-     * @param request  SensorRequestDto information.
+     * @param sensorId              id of {@link Sensor}.
+     * @param request               SensorRequestDto information.
+     * @param loggedInCustomerEmail {@link Customer}.
      * @return an instance of {@link SensorResponseDto}.
      */
-    public SensorResponseDto updateSensor(Long sensorId, SensorRequestDto request) {
+    public SensorResponseDto updateSensor(
+        Long sensorId,
+        SensorRequestDto request,
+        String loggedInCustomerEmail
+    ) {
         commonDatabaseValidator.validate(context -> {
             context.setSensorTypeId(request.getSensorTypeId());
             context.setSensorUnitId(request.getSensorUnitId());
+            context.setLoggedInCustomerEmail(loggedInCustomerEmail);
+            context.setSensorId(sensorId);
         });
 
         Sensor sensor = sensorRepository.getReferenceById(sensorId);
@@ -89,5 +109,10 @@ public class SensorService {
         SensorUnit unit =
             sensorUnitRepository.getReferenceById(request.getSensorUnitId());
         return sensorMapper.toDto(sensorMapper.updateEntity(sensor, request, type, unit));
+    }
+
+    private void validateEmail(String loggedInCustomerEmail) {
+        commonDatabaseValidator.validate(context ->
+            context.setLoggedInCustomerEmail(loggedInCustomerEmail));
     }
 }

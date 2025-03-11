@@ -26,7 +26,6 @@ public class SensorResponseDto {
     @Schema(example = "Sensor model", description = "Sensor model")
     private String model;
 
-    @Schema(example = "Sensor range parameters", description = "Sensor range parameters")
     private RangeDto range;
 
     @Schema(example = "Temperature", description = "Sensor type")

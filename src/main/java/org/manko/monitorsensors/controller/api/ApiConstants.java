@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ApiConstants {
 
     public static final String OK_CODE = "200";
+    public static final String CREATED = "201";
     public static final String UNAUTHORIZED_CODE = "401";
     public static final String FORBIDDEN_CODE = "403";
 
