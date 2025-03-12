@@ -35,7 +35,8 @@ class SensorTypeMapperTest extends BaseMapperContext {
 
         List<SensorTypeResponseDto> actual = sensorTypeMapper.toDtoList(List.of(sensorType));
 
-        assertThat(actual.getFirst().getSensorType()).isEqualTo(expectedList.getFirst().getSensorType());
+        assertThat(actual.getFirst().getSensorType())
+            .isEqualTo(expectedList.getFirst().getSensorType());
     }
 
 }

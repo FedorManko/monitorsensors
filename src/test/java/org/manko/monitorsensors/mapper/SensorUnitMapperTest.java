@@ -35,7 +35,8 @@ class SensorUnitMapperTest extends BaseMapperContext {
 
         List<SensorUnitResponseDto> actual = sensorUnitMapper.toDtoList(List.of(sensorUnit));
 
-        assertThat(actual.getFirst().getSensorUnit()).isEqualTo(expectedList.getFirst().getSensorUnit());
+        assertThat(actual.getFirst().getSensorUnit())
+            .isEqualTo(expectedList.getFirst().getSensorUnit());
     }
 
 }
