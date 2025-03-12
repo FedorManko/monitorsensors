@@ -9,6 +9,9 @@ hypersistence = "3.9.3"
 mapstruct = "1.6.3"
 mapstruct-processor = "1.6.3"
 springdoc = "2.6.0"
+easy-random = "5.0.0"
+faker = "2.4.0"
+testcontainer = "1.20.6"
 
 [libraries]
 liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
@@ -16,3 +19,6 @@ hypersistence = { module = "io.hypersistence:hypersistence-utils-hibernate-63", 
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct-processor" }
 springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+easy-random = { module = "org.jeasy:easy-random-core", version.ref = "easy-random" }
+faker = { module = "net.datafaker:datafaker", version.ref = "faker" }
+testcontainer = { module = "org.testcontainers:postgresql", version.ref = "testcontainer" }

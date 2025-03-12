@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'checkstyle'
+    id 'jacoco'
     id 'com.github.ben-manes.versions' version libs.versions.benManes
     id 'com.gorylenko.gradle-git-properties' version libs.versions.gitProperties
     id 'com.bmuschko.docker-spring-boot-application' version libs.versions.docker
@@ -45,6 +46,9 @@ dependencies {
     annotationProcessor(libs.mapstruct.processor)
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation(libs.testcontainer)
+    testImplementation(libs.easy.random)
+    testImplementation(libs.faker)
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -95,5 +99,49 @@ docker {
         ports = [8080, 8080]
         images = dockerImagePrefix
         jvmArgs = ["-Xmx384m"]
+    }
+}
+
+tasks {
+    jacocoTestReport {
+        dependsOn("test")
+        reports {
+            html.required.set(true)
+            xml.required.set(true)
+            csv.required.set(false)
+        }
+        classDirectories.setFrom(
+                files(
+                        classDirectories.files.collect {
+                            fileTree(it).exclude(
+                                    "org/manko/monitorsensors/aspect/*",
+                                    "org/manko/monitorsensors/config/*",
+                                    "org/manko/monitorsensors/validation/*",
+                                    "org/manko/monitorsensors/dto/*",
+                                    "org/manko/monitorsensors/entity/*",
+                                    "org/manko/monitorsensors/exception/*",
+                                    "org/manko/monitorsensors/service/validator/*",
+                                    "org/manko/monitorsensors/MonitorsensorsApplication"
+                            )
+                        }
+                )
+        )
+        finalizedBy("jacocoTestCoverageVerification")
+    }
+
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = BigDecimal.valueOf(0.3)
+                }
+            }
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+
+        finalizedBy("jacocoTestReport")
     }
 }
